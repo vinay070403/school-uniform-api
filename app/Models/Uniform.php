@@ -12,6 +12,7 @@ class Uniform extends Model
         'price',
         'size',
         'color',
+        'image',            //add image 
     ];
     public function orders()
 {

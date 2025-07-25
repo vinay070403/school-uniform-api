@@ -16,15 +16,15 @@ class UniformController extends Controller
         //return Uniform::all();
         $query = Uniform::query();
 
-    if ($request->has('size')) {
-        $query->where('size', $request->size);
-    }
+        if ($request->has('size')) {
+            $query->where('size', $request->size);
+        }
 
-    if ($request->has('color')) {
-        $query->where('color', $request->color);
-    }
+        if ($request->has('color')) {
+            $query->where('color', $request->color);
+        }
 
-    return $query->get();
+        return $query->get();
     }
 
     /**
@@ -38,9 +38,25 @@ class UniformController extends Controller
             'price' => 'required|numeric',
             'size' => 'required|string',
             'color' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-        $uniform = Uniform::create($request->all());
-        return response()->json($uniform, 201);
+        //$uniform = Uniform::create($request->all());
+        //return response()->json($uniform, 201);
+
+        $data = $request->only(['name', 'description', 'price', 'size', 'color']);      // here add image data
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('uniforms', 'public');          // new line of code
+        }
+
+        $uniform = Uniform::create($data);                          // this one too
+
+        return response()->json($uniform, 201);                    // or this  afetr this
+
+        //Setup File Storage (if needed) php artisan storage:link
+        //http://127.0.0.1:8000/storage/uniforms/filename.jpg
+        
+
     }
 
     /**
