@@ -133,6 +133,45 @@ public function index(Request $request)
 
 <img width="910" height="889" alt="image" src="https://github.com/user-attachments/assets/90fa9971-197c-4313-b111-d6a52d33c3a6" />
 
+```
+ 5. Test in Postman
+Change method to POST
+
+URL: http://127.0.0.1:8000/api/uniforms
+
+Body → form-data
+
+name: Shirt
+
+price: 499
+
+size: M
+
+color: White
+
+image: select a file (type = File)
+
+🔚 Response
+It will return the image path:
+
+json
+Copy
+Edit
+{
+  "id": 1,
+  "name": "Shirt",
+  "image": "uniforms/shirt.jpg",
+  ...
+}
+You can display it via:
+
+php-template
+Copy
+Edit
+<img src="http://127.0.0.1:8000/storage/uniforms/shirt.jpg" />
+✅ Done bro! Now uniform images bhi save ho rahe hain.
+Bolo — edit/update image feature bhi chahiye? Ya aage badhein to dashboard stats?
+
 
 
 
