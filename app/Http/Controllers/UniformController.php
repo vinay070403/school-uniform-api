@@ -55,9 +55,9 @@ class UniformController extends Controller
 
         //Setup File Storage (if needed) php artisan storage:link
         //http://127.0.0.1:8000/storage/uniforms/filename.jpg
-        
-
-    }
+        //Next suggestion: Image upload for uniforms (want that next?)
+        //Ya fir dashboard stats API try karein?
+   }
 
     /**
      * Display the specified resource.
