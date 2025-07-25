@@ -7,9 +7,50 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
+# School Uniform API — Laravel 12
+
+## Setup
+
+1. Clone repo and install dependencies  
+```bash
+git clone https://github.com/yourusername/school-uniform-api.git
+cd school-uniform-api
+composer install
+cp .env.example .env
+php artisan key:generate
+
+```
+2. Setup database in .env and run migrations
+```bash
+php artisan migrate
+   ```
+4. Database & Models
+```bash
+Create Students, Uniforms, Orders tables via migrations
+Models: Student.php, Uniform.php, Order.php
+Setup relationships:
+Student hasMany Orders
+Uniform hasMany Orders
+Order belongsTo Student & Uniform
+```
+5.Controllers & Routes
+```bash
+php artisan make:controller StudentController --api
+php artisan make:controller UniformController --api
+php artisan make:controller OrderController --api
+```
+6. Define API routes in routes/api.php using Route::apiResource()
+
+7. Order Logic
+```bash
+In OrderController@store, validate request and calculate total price
+Save order with student_id, uniform_id, quantity, total_price
+Return created order JSON response
+```
+8. Testing with Postman
+   
 <img width="855" height="774" alt="image" src="https://github.com/user-attachments/assets/a505bce5-ecea-4eb4-a4a2-7029ab424a1c" />
 
 <img width="836" height="776" alt="image" src="https://github.com/user-attachments/assets/26b3db35-feda-4b20-97b8-19b4c427c8a5" />
