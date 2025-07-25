@@ -98,7 +98,40 @@ bash
 Copy
 Edit
 GET /api/stats
+```
+```
+public function index(Request $request)
+{
+    $query = Uniform::query();
 
+    if ($request->has('size')) {
+        $query->where('size', $request->size);
+    }
+
+    if ($request->has('color')) {
+        $query->where('color', $request->color);
+    }
+
+    return $query->get();
+}
+```
+
+<img width="979" height="924" alt="image" src="https://github.com/user-attachments/assets/91260a8a-0444-4ca4-abb5-0cefdf11de46" />
+
+```
+public function index(Request $request)
+{
+    $query = Order::with(['student', 'uniform']);
+
+    if ($request->has('student_id')) {
+        $query->where('student_id', $request->student_id);
+    }
+
+    return $query->get();
+}
+```
+
+<img width="910" height="889" alt="image" src="https://github.com/user-attachments/assets/90fa9971-197c-4313-b111-d6a52d33c3a6" />
 
 
 
