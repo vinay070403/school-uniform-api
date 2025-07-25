@@ -11,9 +11,20 @@ class UniformController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)        //parameter pass for request send
     {
-        return Uniform::all();
+        //return Uniform::all();
+        $query = Uniform::query();
+
+    if ($request->has('size')) {
+        $query->where('size', $request->size);
+    }
+
+    if ($request->has('color')) {
+        $query->where('color', $request->color);
+    }
+
+    return $query->get();
     }
 
     /**

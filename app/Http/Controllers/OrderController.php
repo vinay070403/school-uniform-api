@@ -11,9 +11,16 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)                      // pass request parameter for student_id
     {
-        return Order::with(['student', 'uniform'])->get();
+        // return Order::with(['student', 'uniform'])->get();            //get all details for students and uniform
+        $query = Order::with(['student', 'uniform']);
+
+        if ($request->has('student_id')) {
+            $query->where('student_id', $request->student_id);
+        }
+
+        return $query->get();
     }
 
     /**
@@ -24,17 +31,17 @@ class OrderController extends Controller
         $request->validate([
             'student_id' => 'required|exists:students,id',
             'uniform_id' => 'required|exists:uniforms,id',
-            'quantity'   => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1',
         ]);
         $uniform = Uniform::find($request->uniform_id);
         $totalPrice = $uniform->price * $request->quantity;
 
         $order = Order::create([
-            'student_id'  => $request->student_id,
-            'uniform_id'  => $request->uniform_id,
-            'quantity'    => $request->quantity,
+            'student_id' => $request->student_id,
+            'uniform_id' => $request->uniform_id,
+            'quantity' => $request->quantity,
             'total_price' => $totalPrice,
-            'status'      => 'pending',
+            'status' => 'pending',
         ]);
 
         return response()->json($order, 201);
@@ -45,8 +52,8 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-         $order = Order::with(['student', 'uniform'])->find($id);
-        if (! $order) {
+        $order = Order::with(['student', 'uniform'])->find($id);
+        if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
         return $order;
@@ -58,7 +65,7 @@ class OrderController extends Controller
     public function update(Request $request, string $id)
     {
         $order = Order::find($id);
-        if (! $order) {
+        if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 
@@ -79,7 +86,7 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         $order = Order::find($id);
-        if (! $order) {
+        if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 
