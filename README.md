@@ -7,55 +7,132 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# School Uniform API — Laravel 12
+
+## Setup
+
+1. Clone repo and install dependencies  
+```bash
+git clone https://github.com/yourusername/school-uniform-api.git
+cd school-uniform-api
+composer install
+cp .env.example .env
+php artisan key:generate
+
+```
+2. Setup database in .env and run migrations
+```bash
+php artisan migrate
+   ```
+4. Database & Models
+```bash
+Create Students, Uniforms, Orders tables via migrations
+Models: Student.php, Uniform.php, Order.php
+Setup relationships:
+Student hasMany Orders
+Uniform hasMany Orders
+Order belongsTo Student & Uniform
+```
+5.Controllers & Routes
+```bash
+php artisan make:controller StudentController --api
+php artisan make:controller UniformController --api
+php artisan make:controller OrderController --api
+```
+6. Define API routes in routes/api.php using Route::apiResource()
+
+7. Order Logic
+```bash
+In OrderController@store, validate request and calculate total price
+Save order with student_id, uniform_id, quantity, total_price
+Return created order JSON response
+```
+8. Testing with Postman
+   
+<img width="855" height="774" alt="image" src="https://github.com/user-attachments/assets/a505bce5-ecea-4eb4-a4a2-7029ab424a1c" />
+
+<img width="836" height="776" alt="image" src="https://github.com/user-attachments/assets/26b3db35-feda-4b20-97b8-19b4c427c8a5" />
+
+<img width="759" height="920" alt="image" src="https://github.com/user-attachments/assets/7f2bbe7b-d575-4177-818d-e046e6843de7" />
+
+<img width="823" height="915" alt="image" src="https://github.com/user-attachments/assets/f7081a97-a51b-480e-a34e-dd11858669a2" />
+
+<img width="783" height="821" alt="image" src="https://github.com/user-attachments/assets/6e9bb40f-b978-4b31-b5ec-cddbafbe2224" />
+
+```bash
+Aage kya karein? (Advanced / Real Use Features)
+Here are 3 options — tum decide karo:
+
+1. Upload Uniform Images (File Upload Feature)
+Uniforms ke saath image bhi dikhana ho toh.
+
+Add image column to uniforms table
+
+Store files via Laravel’s Storage system
+
+API accepts file via Postman (or frontend)
+
+2. Filter/Search APIs
+E.g., GET /api/uniforms?size=M, ya orders by student
+
+Query parameters use karke search karna
+
+Filter by size, color, student_id, etc.
+
+3. Dashboard-style Stats API
+Simple analytics ke liye
+
+Total orders
+
+Revenue = sum of all total_price
+
+Top-selling uniform
+
+Orders per student
+
+Can return via:
+
+bash
+Copy
+Edit
+GET /api/stats
+```
+```
+public function index(Request $request)
+{
+    $query = Uniform::query();
+
+    if ($request->has('size')) {
+        $query->where('size', $request->size);
+    }
+
+    if ($request->has('color')) {
+        $query->where('color', $request->color);
+    }
+
+    return $query->get();
+}
+```
+
+<img width="979" height="924" alt="image" src="https://github.com/user-attachments/assets/91260a8a-0444-4ca4-abb5-0cefdf11de46" />
+
+```
+public function index(Request $request)
+{
+    $query = Order::with(['student', 'uniform']);
+
+    if ($request->has('student_id')) {
+        $query->where('student_id', $request->student_id);
+    }
+
+    return $query->get();
+}
+```
+
+<img width="910" height="889" alt="image" src="https://github.com/user-attachments/assets/90fa9971-197c-4313-b111-d6a52d33c3a6" />
+
+
+
+
