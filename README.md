@@ -61,6 +61,44 @@ Return created order JSON response
 
 <img width="783" height="821" alt="image" src="https://github.com/user-attachments/assets/6e9bb40f-b978-4b31-b5ec-cddbafbe2224" />
 
+```bash
+Aage kya karein? (Advanced / Real Use Features)
+Here are 3 options — tum decide karo:
+
+1. Upload Uniform Images (File Upload Feature)
+Uniforms ke saath image bhi dikhana ho toh.
+
+Add image column to uniforms table
+
+Store files via Laravel’s Storage system
+
+API accepts file via Postman (or frontend)
+
+2. Filter/Search APIs
+E.g., GET /api/uniforms?size=M, ya orders by student
+
+Query parameters use karke search karna
+
+Filter by size, color, student_id, etc.
+
+3. Dashboard-style Stats API
+Simple analytics ke liye
+
+Total orders
+
+Revenue = sum of all total_price
+
+Top-selling uniform
+
+Orders per student
+
+Can return via:
+
+bash
+Copy
+Edit
+GET /api/stats
+
 
 
 
